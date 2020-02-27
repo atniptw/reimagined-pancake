@@ -1,18 +1,33 @@
-from flask import Flask, render_template, send_from_directory
-from flask_cors import CORS
-from flask_json import FlaskJSON, json_response
+import os
 
-import socket
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-CORS(app)
-FlaskJSON(app)
+# instantiate the db
+db = SQLAlchemy()
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+def create_app(script_info=None):
 
-@app.route("/hello")
-def hello():
-    name = socket.gethostname()
-    return json_response(greeting="Hello world! My name is {}".format(name))
+    # instantiate the app
+    app = Flask(__name__)
+
+    # set config
+    app_settings = os.getenv('APP_SETTINGS')
+    app.config.from_object(app_settings)
+
+    # set up extensions
+    db.init_app(app)
+
+    # register blueprints
+    from flaskr.api.ping import ping_blueprint
+    app.register_blueprint(ping_blueprint)
+
+    from flaskr.api.tweets import tweets_blueprint
+    app.register_blueprint(tweets_blueprint)
+
+    # shell context for flask cli
+    @app.shell_context_processor
+    def ctx():
+        return {'app': app, 'db': db}
+
+    return app
