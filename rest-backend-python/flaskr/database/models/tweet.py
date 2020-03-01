@@ -2,6 +2,7 @@ from sqlalchemy.sql import func
 
 from flaskr import db
 
+
 class Tweet(db.Model):
 
     __tablename__ = 'tweet'

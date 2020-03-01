@@ -2,6 +2,7 @@ import json
 
 from flaskr.database.models.tweet import Tweet
 
+
 def test_add_tweet(test_app, test_database):
     client = test_app.test_client()
     resp = client.post(
@@ -17,6 +18,7 @@ def test_add_tweet(test_app, test_database):
     assert 'exampleUser' in data['username']
     assert 'example tweet body' in data['body']
 
+
 def test_add_tweet_invalid_json(test_app, test_database):
     client = test_app.test_client()
     resp = client.post(
@@ -27,6 +29,7 @@ def test_add_tweet_invalid_json(test_app, test_database):
     data = json.loads(resp.data.decode())
     assert resp.status_code == 400
     assert 'Input payload validation failed' in data['message']
+
 
 def test_all_tweets(test_app, test_database, add_tweet):
     test_database.session.query(Tweet).delete()

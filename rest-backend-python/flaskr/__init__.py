@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 # instantiate the db
 db = SQLAlchemy()
 
+
 def create_app(script_info=None):
 
     # instantiate the app
@@ -18,12 +19,16 @@ def create_app(script_info=None):
     # set up extensions
     db.init_app(app)
 
-    # register blueprints
-    from flaskr.api.ping import ping_blueprint
-    app.register_blueprint(ping_blueprint)
+    # register api
+    from flaskr.api import api
+    api.init_app(app)
 
-    from flaskr.api.tweets import tweets_blueprint
-    app.register_blueprint(tweets_blueprint)
+    # # register blueprints
+    # from flaskr.api.ping import ping_blueprint
+    # app.register_blueprint(ping_blueprint)
+
+    # from flaskr.api.tweets import tweets_blueprint
+    # app.register_blueprint(tweets_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor
