@@ -3,12 +3,9 @@ name: Python application
 on: [push]
 
 jobs:
-  container-job:
+  python-job:
 
     runs-on: ubuntu-latest
-    
-    container:
-      image:  python:3.8.0-alpine
     
     services:
       postgres:
@@ -21,9 +18,12 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
          
-
     env:
       working-directory: ./rest-backend-python
+      DATABASE_TEST_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/twitter_test
+      FLASK_APP: flaskr
+      FLASK_ENV: development
+      APP_SETTINGS: flaskr.config.DevelopmentConfig
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
