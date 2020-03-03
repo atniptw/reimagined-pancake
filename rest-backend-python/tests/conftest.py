@@ -2,6 +2,7 @@ import pytest
 
 from flaskr import create_app, db
 from flaskr.database.models.tweet import Tweet
+from sqlalchemy_utils.functions import database_exists, create_database, drop_database
 
 
 @pytest.fixture(scope='module')
@@ -14,10 +15,13 @@ def test_app():
 
 @pytest.fixture(scope='module')
 def test_database():
+    if not database_exists(db.engine.url):
+        create_database(db.engine.url)
     db.create_all()
     yield db  # testing happens here
     db.session.remove()
     db.drop_all()
+    drop_database(db.engine.url)
 
 
 @pytest.fixture(scope='function')

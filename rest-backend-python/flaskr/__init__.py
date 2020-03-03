@@ -23,13 +23,6 @@ def create_app(script_info=None):
     from flaskr.api import api
     api.init_app(app)
 
-    # # register blueprints
-    # from flaskr.api.ping import ping_blueprint
-    # app.register_blueprint(ping_blueprint)
-
-    # from flaskr.api.tweets import tweets_blueprint
-    # app.register_blueprint(tweets_blueprint)
-
     # shell context for flask cli
     @app.shell_context_processor
     def ctx():
