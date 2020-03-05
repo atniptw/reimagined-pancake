@@ -3,44 +3,17 @@ name: Python application
 on: [push]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  test:
+    runs-on: [ubuntu-latest]
     
-    services:
-      postgres:
-        image: postgres:12.1-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-        - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-         
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.8'
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt
-      working-directory: ./rest-backend-python
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      working-directory: ./rest-backend-python
-    - name: Test with pytest
-      run: |
-        pytest "tests"
-      working-directory: ./rest-backend-python
-      env:
-        DATABASE_TEST_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/twitter_test
-        FLASK_APP: flaskr
-        FLASK_ENV: development
-        APP_SETTINGS: flaskr.config.DevelopmentConfig
+      - uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          if [ -f docker-compose.test.yml ]; then
+            docker-compose --file docker-compose.test.yml build
+            docker-compose --file docker-compose.test.yml run sut
+          else
+            docker build . --file Dockerfile
+          fi
