@@ -22,7 +22,7 @@ CMD [ "/usr/src/app/entrypoint.sh" ]
 
 
 # Create image for linter
-FROM builder AS linter
+FROM base AS linter
 
 WORKDIR /usr/src/app
 COPY flaskr/ flaskr/
@@ -32,7 +32,7 @@ CMD ["flake8", "flaskr", "tests"]
 
 
 # Create image for tests
-FROM builder AS tests
+FROM base AS tests
 
 WORKDIR /usr/src/app
 COPY flaskr/ flaskr/
