@@ -1,9 +1,10 @@
 version: '3.7'
 services:
     sut:
-        context: .
-        dockerfile: dockerfile
-        target: test
+        build:
+            context: .
+            dockerfile: dockerfile
+            target: test
         environment:
             - FLASK_APP=flaskr
             - FLASK_ENV=development
