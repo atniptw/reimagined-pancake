@@ -1,27 +1,43 @@
-# pull official base image
-FROM python:3.8.0-alpine
+# Create base builder image
+FROM python:3.8.0-alpine AS base
 
-# install dependencies
 RUN apk update && \
     apk add --virtual build-deps gcc python-dev musl-dev && \
     apk add postgresql-dev && \
     apk add netcat-openbsd
 
-# set working directory
-WORKDIR /usr/src/app
-
-# set environment varibles
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# add and install requirements
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
-# add entrypoint.sh
+WORKDIR /usr/src/app
+COPY flaskr/ flaskr/
+
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
-# add app and tests
+CMD [ "/usr/src/app/entrypoint.sh" ]
+
+
+# Create image for linter
+FROM builder AS linter
+
+WORKDIR /usr/src/app
 COPY flaskr/ flaskr/
 COPY tests/ tests/
+
+CMD ["flake8", "flaskr", "tests"]
+
+
+# Create image for tests
+FROM builder AS tests
+
+WORKDIR /usr/src/app
+COPY flaskr/ flaskr/
+COPY tests/ tests/
+
+WORKDIR /usr/src/app/tests
+
+CMD ["pytest"]

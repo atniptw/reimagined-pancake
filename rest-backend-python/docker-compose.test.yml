@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+    sut:
+        context: .
+        dockerfile: dockerfile
+        target: test
+        environment:
+            - FLASK_APP=flaskr
+            - FLASK_ENV=development
+            - APP_SETTINGS=flaskr.config.DevelopmentConfig
+            - DATABASE_URL=postgresql://postgres:postgres@twitter-db:5432/twitter_dev
+            - DATABASE_TEST_URL=postgresql://postgres:postgres@twitter-db:5432/twitter_test
+        depends_on: 
+            - database
+    
+    database:
+        image: postgres:12.1-alpine
+        expose:
+          - 5432
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
