@@ -35,7 +35,6 @@ CMD ["flake8", "flaskr", "tests"]
 FROM base AS tests
 
 WORKDIR /usr/src/app
-COPY flaskr/ flaskr/
 COPY tests/ tests/
 
 WORKDIR /usr/src/app/tests
