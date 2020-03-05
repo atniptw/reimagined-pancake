@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run flake8 linter
+        working-directory: ./rest-backend-python
         run: |
             docker build . --file Dockerfile --target linter -t app-linter
             docker container run --name linter app-linter
