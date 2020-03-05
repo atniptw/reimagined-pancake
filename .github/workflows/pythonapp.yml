@@ -3,30 +3,21 @@ name: Python Flask Application
 on: [push]
 
 jobs:
-  build:
+  verify:
+    name: Linting & Testing
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Build Docker Image
         working-directory: ./rest-backend-python
         run: docker build . --file Dockerfile
-  
-  lint:
-    needs: build
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
+
       - name: Run flake8 linter
         working-directory: ./rest-backend-python
         run: |
             docker build . --file Dockerfile --target linter -t app-linter
             docker container run --name linter app-linter
-
-  test:
-    needs: lint
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
+            
       - name: Run tests
         working-directory: ./rest-backend-python
         run: |
