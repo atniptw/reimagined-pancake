@@ -34,4 +34,5 @@ CMD ["pytest"]
 # Create image for linter
 FROM tests AS linter
 WORKDIR /usr/src/app
+COPY .flake8 .flake8
 CMD ["flake8", "flaskr", "tests"]
