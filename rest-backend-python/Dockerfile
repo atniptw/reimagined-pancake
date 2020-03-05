@@ -21,16 +21,6 @@ RUN chmod +x /usr/src/app/entrypoint.sh
 CMD [ "/usr/src/app/entrypoint.sh" ]
 
 
-# Create image for linter
-FROM base AS linter
-
-WORKDIR /usr/src/app
-COPY flaskr/ flaskr/
-COPY tests/ tests/
-
-CMD ["flake8", "flaskr", "tests"]
-
-
 # Create image for tests
 FROM base AS tests
 
@@ -38,5 +28,10 @@ WORKDIR /usr/src/app
 COPY tests/ tests/
 
 WORKDIR /usr/src/app/tests
-
 CMD ["pytest"]
+
+
+# Create image for linter
+FROM tests AS linter
+WORKDIR /usr/src/app
+CMD ["flake8", "flaskr", "tests"]
