@@ -1,8 +1,0 @@
-Flask
-pytest
-Flask-SQLAlchemy
-flask-restx
-Werkzeug==0.16.0
-psycopg2
-flake8
-sqlalchemy-utils
