@@ -7,18 +7,18 @@ terraform {
     }
   }
 
-  required_version = ">= 0.14.9"
+  backend "azurerm" {
+    resource_group_name  = "atnip-professional-development"
+    storage_account_name = "pdaze1terrsa1"
+    container_name       = "terraformdevops"
+    key                  = "terraformdevops.tfstate"
+  }
+
+  required_version = ">= 0.14.3"
 }
 
 provider "azurerm" {
   features {}
-}
-
-backend "azurerm" {
-  resource_group_name  = "atnip-professional-development"
-  storage_account_name = "pdaze1terrsa1"
-  container_name       = "terraformdevops"
-  key                  = "terraformdevops.tfstate"
 }
 
 resource "azurerm_resource_group" "rg" {
