@@ -66,7 +66,7 @@ resource "azurerm_function_app" "api_function_app" {
       WEBSITE_RUN_FROM_PACKAGE = "1"
       FUNCTION_APP_EDIT_MODE   = "readonly"
       AZ_RESOURCE_GROUP        = azurerm_resource_group.rg.name
-
+      GOOGLE_CLIENT_ID         = "456489038256-mabndspd8n3e3qlbgjug30n1trgmql1n.apps.googleusercontent.com"
     },
   )
 
