@@ -16,39 +16,50 @@ on:
 env:
   AZURE_FUNCTIONAPP_NAME: atnipaze1fa01  # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './azure-functions/Functions'    # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '5.0.x'              # set this to the dotnet version to use
+  DOTNET_VERSION: '5.x'              # set this to the dotnet version to use
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET 3
+
+    - name: Setup DotNet 3 Environment
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.x'
-    - name: Setup .NET 5
+
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '${{ env.DOTNET_VERSION }}'
+    
     - name: Restore dependencies
       working-directory: "./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
       run: dotnet restore
+    
     - name: Build
       working-directory: "./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
       run: dotnet build --no-restore
+    
     - name: Test
       working-directory: "./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
       run: dotnet test --no-build --verbosity normal
 
   build-and-deploy:
+    needs: 'build-and-test'
     runs-on: ubuntu-latest
     environment: dev
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@master
+      
+    - name: Setup DotNet 3 Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.x'
 
     - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
       uses: actions/setup-dotnet@v1
