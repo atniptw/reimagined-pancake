@@ -34,7 +34,7 @@ jobs:
       run: dotnet restore
     - name: Build
       working-directory: "./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
-      run: dotnet build --no-restore -v
+      run: dotnet build --no-restore -v diag
     - name: Test
       working-directory: "./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
       run: dotnet test --no-build --verbosity normal
