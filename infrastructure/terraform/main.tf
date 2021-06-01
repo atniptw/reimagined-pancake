@@ -49,6 +49,14 @@ resource "azurerm_app_service_plan" "function_service_plan" {
   }
 }
 
+resource "azurerm_application_insights" "ai" {
+  name                = "atnipaze1ai01"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  application_type    = "other"
+  retention_in_days   = 30
+}
+
 resource "azurerm_function_app" "api_function_app" {
   name                       = "atnipaze1fa01"
   location                   = azurerm_resource_group.rg.location
@@ -62,11 +70,12 @@ resource "azurerm_function_app" "api_function_app" {
 
   app_settings = merge(
     {
-      FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
-      WEBSITE_RUN_FROM_PACKAGE = "1"
-      FUNCTION_APP_EDIT_MODE   = "readonly"
-      AZ_RESOURCE_GROUP        = azurerm_resource_group.rg.name
-      GOOGLE_CLIENT_ID         = "456489038256-mabndspd8n3e3qlbgjug30n1trgmql1n.apps.googleusercontent.com"
+      FUNCTIONS_WORKER_RUNTIME       = "dotnet-isolated"
+      WEBSITE_RUN_FROM_PACKAGE       = "1"
+      FUNCTION_APP_EDIT_MODE         = "readonly"
+      AZ_RESOURCE_GROUP              = azurerm_resource_group.rg.name
+      GOOGLE_CLIENT_ID               = "456489038256-mabndspd8n3e3qlbgjug30n1trgmql1n.apps.googleusercontent.com"
+      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.ai.instrumentation_key
     },
   )
 
