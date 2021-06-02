@@ -57,6 +57,28 @@ resource "azurerm_application_insights" "ai" {
   retention_in_days   = 30
 }
 
+resource "azurerm_api_management" "apim" {
+  name                = "atnipaze1am01"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  publisher_name      = "Professional Development"
+  publisher_email     = "atnip@sep.om"
+
+  sku_name = "Consumption_0"
+
+  policy {
+    xml_content = <<XML
+    <policies>
+      <inbound />
+      <backend />
+      <outbound />
+      <on-error />
+    </policies>
+XML
+
+  }
+}
+
 resource "azurerm_function_app" "api_function_app" {
   name                       = "atnipaze1fa01"
   location                   = azurerm_resource_group.rg.location
