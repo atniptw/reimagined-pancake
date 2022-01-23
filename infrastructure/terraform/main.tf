@@ -59,8 +59,7 @@ resource "azurerm_app_service_plan" "webappserviceplan" {
   name                = "PDAZE1APIMSP01"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
-  kind                = "Linux"
-  reserved            = true
+  kind                = "App"
 
   sku {
     tier = "Free"
