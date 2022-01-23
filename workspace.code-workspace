@@ -7,7 +7,7 @@
 			"path": "infrastructure"
 		},
 		{
-			"path": "azure-functions"
+			"path": "AzureWebApp"
 		}
 	],
 	"settings": {}

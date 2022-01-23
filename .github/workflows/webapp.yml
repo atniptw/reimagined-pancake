@@ -1,0 +1,42 @@
+name: .NET Web App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  AZURE_WEB_APP_NAME: PDAZE1APIMAS01
+  AZURE_WEB_APP_PACKAGE_PATH: './azure-functions/Functions'
+  DOTNET_VERSION: '6.x'
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup DotNet 3 Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.x'
+
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '${{ env.DOTNET_VERSION }}'
+
+    - name: Restore dependencies
+      working-directory: "./${{ env.AZURE_WEB_APP_PACKAGE_PATH }}"
+      run: dotnet restore
+
+    - name: Build
+      working-directory: "./${{ env.AZURE_WEB_APP_PACKAGE_PATH }}"
+      run: dotnet build --no-restore
+
+    - name: Test
+      working-directory: "./${{ env.AZURE_WEB_APP_PACKAGE_PATH }}"
+      run: dotnet test --no-build --verbosity normal
