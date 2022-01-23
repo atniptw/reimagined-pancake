@@ -22,7 +22,7 @@ provider "azurerm" {
 }
 
 data "azurerm_resource_group" "rg" {
-  name     = "PDAZE1APIMRG01"
+  name = "PDAZE1APIMRG01"
 }
 
 # resource "azurerm_application_insights" "ai" {
@@ -56,13 +56,25 @@ data "azurerm_resource_group" "rg" {
 # }
 
 resource "azurerm_app_service_plan" "webappserviceplan" {
-  name                = "api-appserviceplan-pro"
-  resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  location            = "${data.azurerm_resource_group.rg.location}"
+  name                = "api-appserviceplan"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   kind                = "Linux"
 
   sku {
     tier = "Free"
     size = "F1"
+  }
+}
+
+resource "azurerm_app_service" "example" {
+  name                = "app-service"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  app_service_plan_id = azurerm_app_service_plan.webappserviceplan.id
+
+  site_config {
+    dotnet_framework_version = "v6.0"
+    scm_type                 = "Github"
   }
 }
