@@ -56,7 +56,7 @@ data "azurerm_resource_group" "rg" {
 # }
 
 resource "azurerm_app_service_plan" "webappserviceplan" {
-  name                = "api-appserviceplan"
+  name                = "PDAZE1APIMSP01"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   kind                = "Linux"
@@ -69,7 +69,7 @@ resource "azurerm_app_service_plan" "webappserviceplan" {
 }
 
 resource "azurerm_app_service" "pdappservice" {
-  name                = "pd-app-service"
+  name                = "PDAZE1APIMAS01"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   app_service_plan_id = azurerm_app_service_plan.webappserviceplan.id
