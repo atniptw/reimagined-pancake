@@ -75,7 +75,8 @@ resource "azurerm_app_service" "pdappservice" {
   app_service_plan_id = azurerm_app_service_plan.webappserviceplan.id
 
   site_config {
-    dotnet_framework_version = "v6.0"
-    scm_type                 = "GitHub"
+    use_32_bit_worker_process = true
+    dotnet_framework_version  = "v6.0"
+    scm_type                  = "GitHub"
   }
 }
