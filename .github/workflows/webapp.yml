@@ -3,10 +3,10 @@ name: .NET Web App
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
     paths:
     - AzureWebApp
+
+  workflow_dispatch:
 
 env:
   AZURE_WEB_APP_NAME: PDAZE1APIMAS01
