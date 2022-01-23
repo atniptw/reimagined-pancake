@@ -15,7 +15,6 @@ env:
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -41,24 +40,27 @@ jobs:
 
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: dev
+
     steps:
+      - uses: actions/checkout@v2
 
-      # Checkout the repo
-      - uses: actions/checkout@master
-
-      # Setup .NET Core SDK
-      - name: Setup .NET Core
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Restore dependencies
+        working-directory: "./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+        run: dotnet restore
+
       # Run dotnet build and publish
-      - name: dotnet build and publish
-        run: |
-          dotnet restore
-          dotnet build --configuration Release
+      - name: Build
+        run: dotnet build --configuration Release
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+
+      - name: Publish
+        working-directory: "./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+        run: ddotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
 
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
