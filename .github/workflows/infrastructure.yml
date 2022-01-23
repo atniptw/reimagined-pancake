@@ -2,8 +2,9 @@ name: 'Terraform'
 
 on:
   push:
-    branches:
-    - main
+    branches: [ main ]
+    paths:
+    - infrastructure
 
   workflow_dispatch:
 
