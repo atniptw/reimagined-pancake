@@ -39,6 +39,7 @@ jobs:
 
 
   build-and-deploy:
+    needs: 'build-and-test'
     runs-on: ubuntu-latest
 
     steps:
@@ -56,11 +57,10 @@ jobs:
       # Run dotnet build and publish
       - name: Build
         run: dotnet build --configuration Release
-          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
 
       - name: Publish
         working-directory: "./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
-        run: ddotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+        run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
 
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
