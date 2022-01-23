@@ -77,6 +77,6 @@ resource "azurerm_app_service" "pdappservice" {
   site_config {
     use_32_bit_worker_process = true
     dotnet_framework_version  = "v6.0"
-    scm_type                  = "GitHub"
+    scm_type                  = "None"
   }
 }
