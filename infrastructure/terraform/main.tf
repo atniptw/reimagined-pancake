@@ -78,4 +78,8 @@ resource "azurerm_app_service" "pdappservice" {
     dotnet_framework_version  = "v6.0"
     scm_type                  = "None"
   }
+
+  depends_on = [
+    azurerm_app_service_plan.webappserviceplan
+  ]
 }
