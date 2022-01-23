@@ -60,6 +60,7 @@ resource "azurerm_app_service_plan" "webappserviceplan" {
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   kind                = "Linux"
+  reserved            = true
 
   sku {
     tier = "Free"
