@@ -56,7 +56,8 @@ jobs:
 
       # Run dotnet build and publish
       - name: Build
-        run: dotnet build ./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/AzureWebApp --configuration Release
+        working-directory: "./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+        run: dotnet build --configuration Release
 
       - name: Publish
         working-directory: "./${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
