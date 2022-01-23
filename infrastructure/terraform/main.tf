@@ -68,8 +68,8 @@ resource "azurerm_app_service_plan" "webappserviceplan" {
   }
 }
 
-resource "azurerm_app_service" "example" {
-  name                = "app-service"
+resource "azurerm_app_service" "pdappservice" {
+  name                = "pd-app-service"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   app_service_plan_id = azurerm_app_service_plan.webappserviceplan.id
