@@ -79,6 +79,10 @@ resource "azurerm_app_service" "pdappservice" {
     scm_type                  = "None"
   }
 
+  auth_settings {
+    enabled = true
+  }
+
   depends_on = [
     azurerm_app_service_plan.webappserviceplan
   ]
