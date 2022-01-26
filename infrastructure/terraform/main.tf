@@ -8,8 +8,8 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "PDAZE1APIMRG01"
-    storage_account_name = "pdaze1apimsa01"
+    resource_group_name  = "VSSAZE1PDRG01"
+    storage_account_name = "vssaze1pdsa01"
     container_name       = "terraformdevops"
     key                  = "terraformdevops.tfstate"
   }
@@ -22,7 +22,7 @@ provider "azurerm" {
 }
 
 data "azurerm_resource_group" "rg" {
-  name = "PDAZE1APIMRG01"
+  name = "VSSAZE1PDRG01"
 }
 
 # resource "azurerm_application_insights" "ai" {
@@ -56,7 +56,7 @@ data "azurerm_resource_group" "rg" {
 # }
 
 resource "azurerm_app_service_plan" "webappserviceplan" {
-  name                = "PDAZE1APIMSP01"
+  name                = "VSSAZE1PDSP01"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   kind                = "App"
@@ -68,7 +68,7 @@ resource "azurerm_app_service_plan" "webappserviceplan" {
 }
 
 resource "azurerm_app_service" "pdappservice" {
-  name                = "PDAZE1APIMAS01"
+  name                = "VSSAZE1PDAS01"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   app_service_plan_id = azurerm_app_service_plan.webappserviceplan.id
