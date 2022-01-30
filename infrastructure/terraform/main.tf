@@ -33,27 +33,46 @@ data "azurerm_resource_group" "rg" {
 #   retention_in_days   = 1
 # }
 
-# resource "azurerm_api_management" "apim" {
-#   name                = "pdaze1apimam01"
-#   resource_group_name = "${data.azurerm_resource_group.rg.name}"
-#   location            = "${data.azurerm_resource_group.rg.location}"
-#   publisher_name      = "Professional Development"
-#   publisher_email     = "atnip@sep.com"
+resource "azurerm_api_management" "apim" {
+  name                = "VSSAZE1PDAM01"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  location            = "${data.azurerm_resource_group.rg.location}"
+  publisher_name      = "Professional Development"
+  publisher_email     = "atnip@sep.com"
 
-#   sku_name = "Consumption_0"
+  sku_name = "Consumption_0"
 
-#   policy {
-#     xml_content = <<XML
-#     <policies>
-#       <inbound />
-#       <backend />
-#       <outbound />
-#       <on-error />
-#     </policies>
-# XML
+  policy {
+    xml_content = <<XML
+    <policies>
+      <inbound />
+      <backend />
+      <outbound />
+      <on-error />
+    </policies>
+XML
 
-#   }
-# }
+  }
+}
+
+resource "azurerm_api_management_api" "project" {
+  name                = "Project"
+  resource_group_name = "${data.azurerm_resource_group.rg.name}"
+  api_management_name = "${azurerm_api_management.apim.name}"
+  revision            = "1"
+  display_name        = "Project API"
+  path                = "project"
+  protocols           = ["https"]
+
+  import {
+    content_format = "openapi+json"
+    content_value  = "${data.local_file.swagger.content}"
+  }
+}
+
+data "local_file" "example" {
+filename = "${path.module}/swagger.json"
+}
 
 resource "azurerm_app_service_plan" "webappserviceplan" {
   name                = "VSSAZE1PDSP01"
