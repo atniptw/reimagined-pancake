@@ -18,6 +18,17 @@
           }
         }
       }
+    },
+    "/name": {
+      "get": {
+        "description": "example",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }
