@@ -40,7 +40,7 @@ resource "azurerm_api_management" "apim" {
   publisher_name      = "Professional Development"
   publisher_email     = "atnip@sep.com"
 
-  sku_name = "Consumption_0"
+  sku_name = "Developer_0"
 
   policy {
     xml_content = <<XML
@@ -96,10 +96,6 @@ resource "azurerm_app_service" "pdappservice" {
     use_32_bit_worker_process = true
     dotnet_framework_version  = "v6.0"
     scm_type                  = "None"
-  }
-
-  auth_settings {
-    enabled = true
   }
 
   depends_on = [
