@@ -35,8 +35,8 @@ data "azurerm_resource_group" "rg" {
 
 resource "azurerm_api_management" "apim" {
   name                = "VSSAZE1PDAM01"
-  resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  location            = "${data.azurerm_resource_group.rg.location}"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   publisher_name      = "Professional Development"
   publisher_email     = "atnip@sep.com"
 
@@ -57,8 +57,8 @@ XML
 
 resource "azurerm_api_management_api" "project" {
   name                = "Project"
-  resource_group_name = "${data.azurerm_resource_group.rg.name}"
-  api_management_name = "${azurerm_api_management.apim.name}"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  api_management_name = azurerm_api_management.apim.name
   revision            = "1"
   display_name        = "Project API"
   path                = "project"
@@ -66,12 +66,12 @@ resource "azurerm_api_management_api" "project" {
 
   import {
     content_format = "openapi+json"
-    content_value  = "${data.local_file.swagger.content}"
+    content_value  = data.local_file.swagger.content
   }
 }
 
 data "local_file" "example" {
-filename = "${path.module}/swagger.json"
+  filename = "${path.module}/swagger.json"
 }
 
 resource "azurerm_app_service_plan" "webappserviceplan" {
