@@ -40,7 +40,7 @@ resource "azurerm_api_management" "apim" {
   publisher_name      = "Professional Development"
   publisher_email     = "atnip@sep.com"
 
-  sku_name = "Developer_0"
+  sku_name = "Developer_1"
 
   policy {
     xml_content = <<XML
