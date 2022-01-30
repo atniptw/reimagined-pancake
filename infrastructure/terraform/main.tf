@@ -70,7 +70,7 @@ resource "azurerm_api_management_api" "project" {
   }
 }
 
-data "local_file" "example" {
+data "local_file" "swagger" {
   filename = "${path.module}/swagger.json"
 }
 
